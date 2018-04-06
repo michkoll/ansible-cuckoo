@@ -35,7 +35,45 @@ $ cuckoo web
 
 Die Variablen in inventory/hosts_vars/cuckoo_host müssen vor dem Start des Playbooks angepasst werden.
 
-TODO: Beschreibung Variablen
+Im folgenden werden die wichtigsten Variablen beschrieben:
+
+Konfiguration des Cuckoo-Nutzers und des Cuckoo-Working-Directory
+```yaml
+cuckoo_user: cuckoo
+cuckoo_working_directory: "/home/{{ cuckoo_user }}/cuckoo_cwd"
+```
+
+Interface- und IP-Konfiguration
+```yaml
+cuckoo_interface:
+  name: vboxnet0
+  ip: 192.168.56.1
+  netmask: 255.255.255.0
+  broadcast: 192.168.56.255
+```
+
+Konfiguration der Cuckoo-Nodes
+```yaml
+cuckoo_nodes:
+  - label: win7x64-01
+    ip: 192.168.56.101
+    platform: windows
+    snapshot: vmcloak
+    osprofile: Win7SP1x64
+  - label: winXp-01
+    ip: 192.168.56.110
+    platform: windows
+    snapshot: vmcloak
+    osprofile: WinXPSP3x86
+```
+
+Aktivieren und Deaktivieren von Zusatzmodulen
+```yaml
+cuckoo_use_tcpdump: True
+cuckoo_use_volatility: True
+cuckoo_use_virustotal: True
+cuckoo_use_yara: True
+```
 
 ## Test
 
@@ -59,3 +97,12 @@ $ VBoxManage hostonlyif Create
 $ VBoxManage hostonlyif ipconfig <hostonlyadapter> --ip <ip>
 $ sudo ifconfig <hostonlyadapter> <ip> netmask <netmask> broadcast <broadcastip>
 ```
+
+## Referenzen
+
+Inspiriert von fyhertz/ansible-role-cuckoo
+
+## Copyright und Lizenz
+
+MIT
+Copyright (c) 2018 michkoll

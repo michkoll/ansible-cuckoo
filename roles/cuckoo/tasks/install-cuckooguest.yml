@@ -7,7 +7,7 @@
     cache_valid_time: 3600
   with_items: "{{ vmcloak_apt_requirements }}"
   become: yes
-  become_user: "{{ cuckoo_user }}"
+
 
 - name: Install vmcloak
   pip:

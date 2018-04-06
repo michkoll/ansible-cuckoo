@@ -100,7 +100,7 @@ $ sudo ifconfig <hostonlyadapter> <ip> netmask <netmask> broadcast <broadcastip>
 
 ## Referenzen
 
-Inspiriert von fyhertz/ansible-role-cuckoo
+Inspiriert von [fyhertz/ansible-role-cuckoo](https://github.com/fyhertz/ansible-role-cuckoo)
 
 ## Copyright und Lizenz
 

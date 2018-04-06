@@ -1,0 +1,32 @@
+---
+# tasks file for cuckoo
+
+- import_tasks: install-cuckoo.yml
+  become: True
+  tags: ['role::cuckoo::install']
+
+- import_tasks: install-yara.yml
+  become: True
+  when: cuckoo_use_yara
+  tags: ['role::cuckoo::install']
+
+- import_tasks: install-tor.yml
+  become: True
+  when: cuckoo_tor.enabled
+  tags: ['role::cuckoo::install','role::cuckoo::tor']
+
+- import_tasks: configure-cuckoo.yml
+  tags: ['role::cuckoo::configure']
+
+- import_tasks: install-cuckooguest.yml
+  when: cuckoo_use_vmcloak
+  tags: ['role::cuckoo::install','role::cuckoo::vmcloak']
+
+- import_tasks: install-volatility.yml
+  when: cuckoo_use_volatility
+  tags: ['role::cuckoo::install','role::cuckoo::volatility']
+
+- name: restart tor
+  become: yes
+  service: name=tor state=restarted
+  tags: always

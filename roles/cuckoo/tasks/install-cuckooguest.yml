@@ -1,0 +1,41 @@
+---
+- name: Install required packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items: "{{ vmcloak_apt_requirements }}"
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+
+- name: Install vmcloak
+  pip:
+    name: "{{ item }}"
+    state: latest
+    virtualenv_python: python2.7
+    virtualenv: "{{ cuckoo_working_directory }}/venv_vmcloak"
+  with_items: "{{ vmcloak_pip_packages }}"
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+
+#- name: Reset vmcloak
+#  file:
+#    path: "~/.vmcloak/"
+#    state: absent
+#  become: yes
+#  become_user: "{{ cuckoo_user }}"
+#  when: vmcloak_reset == True
+#
+#- name: Check if config directory exists
+#  stat:
+#    path: "~/.vmcloak/"
+#  register: config_dir_exists
+#  become: yes
+#  become_user: "{{ cuckoo_user }}"
+#
+#- name: Create config directory if not exists
+#  command: "vmcloak"
+#  when: config_dir_exists.stat.exists == False
+#  become: yes
+#  become_user: "{{ cuckoo_user }}"

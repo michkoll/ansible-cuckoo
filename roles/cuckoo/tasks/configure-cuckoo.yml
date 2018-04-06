@@ -1,0 +1,40 @@
+---
+- name: Copy configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ cuckoo_working_directory }}/conf/{{ item }}"
+    owner: "{{ cuckoo_user }}"
+    group: "{{ cuckoo_user }}"
+    mode: 0644
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+  with_items:
+    - "{{ cuckoo_configuration_files }}"
+
+- name: Check if Host-Only-Adapter exists
+  shell: "VBoxManage list hostonlyifs"
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+  register: hostonlyifs
+
+- name: Create hostonlyif
+  shell: "VBoxManage hostonlyif create"
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+  when: cuckoo_interface.name not in hostonlyifs
+
+- name: Configure Host-Only-Adapter
+  shell: "VBoxManage hostonlyif ipconfig {{ cuckoo_interface.name }} --ip {{ cuckoo_interface.ip }}"
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+
+- name: Deactivate DHCP-Server
+  shell: "VBoxManage dhcpserver remove --ifname {{ cuckoo_interface.name }}"
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+  register: dhcp_deactivate
+  failed_when: "'VBoxManage: error: DHCP server does not exist' not in dhcp_deactivate.stderr and dhcp_deactivate.rc != 0"
+
+- name: Configure Adapter
+  shell: "ifconfig {{ cuckoo_interface.name }} {{ cuckoo_interface.ip }} netmask {{ cuckoo_interface.netmask }} broadcast {{ cuckoo_interface.broadcast }}"
+  become: yes

@@ -1,0 +1,6 @@
+---
+# vars file for virtualbox
+
+virtualbox_major_version: "{{ virtualbox_version.split('.')[0] }}"
+virtualbox_minor_version: "{{ virtualbox_version.split('.')[1] }}"
+virtualbox_build_version: "{{ virtualbox_version.split('.')[2] }}"

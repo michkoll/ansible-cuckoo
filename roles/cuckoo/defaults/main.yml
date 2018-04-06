@@ -1,0 +1,118 @@
+---
+# defaults file for cuckoo
+
+# Configuring cuckoo
+cuckoo_user: cuckoo
+cuckoo_user_passwd: "$6$uus2eT.SMd/$dxMYfypDKa6J6KBP7.VNGwdxoJtM3UUJj8ZmbNIe0CpHV/2fQSUbRdOVhdtfCAZD6cx/ZK/weH.HrBsjecYs/1"
+cuckoo_working_directory: "/home/{{ cuckoo_user }}/cuckoo_test"
+
+
+cuckoo_use_tcpdump: True
+cuckoo_use_volatility: True
+cuckoo_use_virustotal: True
+cuckoo_use_yara: True
+
+virtualbox_group: vboxusers
+
+python_version: 2.7
+
+# Pip-Packages
+cuckoo_pip_packages:
+  - setuptools
+  - cuckoo
+vmcloak_pip_packages:
+  - vmcloak
+
+
+
+cuckoo_configuration_files:
+  - auxiliary.conf
+  - avd.conf
+  - cuckoo.conf
+  - esx.conf
+  - kvm.conf
+  - memory.conf
+  - physical.conf
+  - processing.conf
+  - qemu.conf
+  - reporting.conf
+  - routing.conf
+  - virtualbox.conf
+  - vmware.conf
+  - vsphere.conf
+  - xenserver.conf
+
+# Configuration section
+cuckoo_machinery: virtualbox
+cuckoo_interface:
+  name: vboxnet0
+  ip: 192.168.56.1
+  netmask: 255.255.255.0
+  broadcast: 192.168.56.255
+
+cuckoo_use_inetsim:
+  enabled: True
+  ip: 192.168.56.2
+
+cuckoo_tor:
+  enabled: True
+
+cuckoo_use_vmcloak: True
+
+cuckoo_nodes:
+  - label: win7x64-01
+    ip: 192.168.56.101
+    platform: windows
+    snapshot: vmcloak
+    osprofile: Win7SP1x64
+  - label: winXp-01
+    ip: 192.168.56.110
+    platform: windows
+    snapshot: vmcloak
+    osprofile: WinXPSP3x86
+
+
+
+
+# Requirements for cuckoo installation
+cuckoo_apt_requirements:
+  - python2.7
+  - python-pip
+  - python2.7-dev
+  - libffi-dev
+  - libssl-dev
+  - python-virtualenv
+  - python-setuptools
+  - libjpeg-dev
+  - zlib1g-dev
+  - swig
+
+yara_version: "3.3.0"
+yara_apt_requirements:
+  - libpcre3
+  - libpcre3-dev
+  - libtool
+  - automake
+  - autoconf
+  - python-dev
+  - libssl-dev
+  - libjansson-dev
+  - libmagic-dev
+  - build-essential
+
+vmcloak_apt_requirements:
+  - build-essential
+  - genisoimage
+
+cuckoo_apt_databases:
+  - mongodb
+  - postgresql
+  - libpq-dev
+
+volatility_pip_requirements:
+  - distorm3
+  - pycrypto
+
+volatility_version: "2.5"
+
+vmcloak_reset: False

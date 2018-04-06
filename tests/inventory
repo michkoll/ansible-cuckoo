@@ -1,0 +1,11 @@
+[cuckoo_host]
+192.168.101.2
+
+[cuckoo_host:vars]
+ansible_connection=ssh
+ansible_user=vagrant
+ansible_port=22
+ansible_ssh_private_key_file="~/.vagrant.d/insecure_private_key"
+ssh_args=-o
+IdentitiesOnly=yes
+ansible_python_interpreter=/usr/bin/python2.7

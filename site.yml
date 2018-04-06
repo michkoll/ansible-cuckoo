@@ -1,0 +1,5 @@
+---
+- hosts: cuckoo_host
+  roles:
+    - { role: virtualbox, become: yes }
+    - { role: cuckoo }

@@ -1,0 +1,21 @@
+---
+# handlers file for cuckoo
+
+- name: restart cuckoo-rooter
+  become: yes
+  become_method: sudo
+  service: name=cuckoo-rooter state=restarted enabled=yes
+
+- name: restart cuckoo
+  become: yes
+  become_method: sudo
+  service: name=cuckoo state=restarted enabled=yes
+
+- name: restart cuckoo-web
+  become: yes
+  become_method: sudo
+  service: name=cuckoo-rooter state=restarted enabled=yes
+
+- name: restart tor
+  become: yes
+  service: name=tor state=restarted

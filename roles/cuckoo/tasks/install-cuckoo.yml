@@ -1,0 +1,89 @@
+- name: Install dependencies
+  apt:
+    state: present
+    name: "{{ item }}"
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - "{{ cuckoo_apt_requirements }}"
+    - "{{ cuckoo_apt_databases }}"
+  become: yes
+
+- block:
+    - name: Install tcpdump
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes
+        cache_valid_time: 3600
+      with_items:
+        - tcpdump
+        - libcap2-bin
+        - apparmor-utils
+    - name: Set capabilities for tcpdump
+      capabilities:
+        path: "/usr/sbin/tcpdump"
+        capability: "{{ item }}"
+        state: present
+      with_items:
+        - cap_net_raw,cap_net_admin=eip
+    - name: Disable AppArmor for tcpdump
+      command: aa-disable /usr/sbin/tcpdump
+      failed_when: False
+  when: cuckoo_use_tcpdump
+  become: yes
+
+- name: Create cuckoo user and add to VBox-Group
+  user:
+    name: "{{ cuckoo_user }}"
+    password: "{{ cuckoo_user_passwd }}"
+    groups: "{{ virtualbox_group }}"
+    state: present
+  become: yes
+
+- name: Allow cuckoo-user to have passwordless sudo
+  lineinfile:
+    dest: "/etc/sudoers"
+    state: present
+    regexp: '^%{{ cuckoo_user }}'
+    line: '%{{ cuckoo_user}} ALL=(ALL) NOPASSWD:ALL'
+    validate: 'visudo -cf %s'
+  become: yes
+
+- name: Allow cuckoo-user xhost
+  command: xhost +SI:localuser:{{ cuckoo_user }}
+  become: yes
+  failed_when: False
+
+- name: Install cuckoo
+  pip:
+    name: "{{ item }}"
+    state: latest
+    executable: pip2
+  with_items: "{{ cuckoo_pip_packages }}"
+  become: yes
+
+- name: Install weasyprint
+  pip:
+    name: weasyprint
+    state: present
+    executable: pip2
+    version: 0.36
+  become: yes
+
+- name: Check if CWD exists
+  stat: path="{{ cuckoo_working_directory }}/conf"
+  register: cuckoo_stat_cwd
+
+- name: Run cuckoo for creating CWD
+  shell: "cuckoo --cwd={{ cuckoo_working_directory }}"
+  become: yes
+  become_user: "{{ cuckoo_user }}"
+  when: cuckoo_stat_cwd.stat.exists == False
+
+- name: Install community modules
+  shell: "cuckoo community"
+  args:
+    chdir: "{{ cuckoo_working_directory }}"
+  become: yes
+  become_user: "{{ cuckoo_user }}"

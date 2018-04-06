@@ -1,0 +1,44 @@
+---
+# Allgemeine Optionen
+cuckoo_user: cuckoo
+cuckoo_working_directory: "/home/{{ cuckoo_user }}/cuckoo_cwd"
+
+# Optionale Features aktivieren (True) oder deaktivieren (False)
+cuckoo_use_tcpdump: True
+cuckoo_use_volatility: True
+cuckoo_use_virustotal: True
+cuckoo_use_yara: True
+
+# Installiert vmcloak in einer virtuelenv-Umgebung ({{cuckoo_cwd}}/venv_vmcloak)
+cuckoo_use_vmcloak: True
+
+# Rooter-Konfiguration
+# INetSim-Option konfigurieren
+cuckoo_use_inetsim:
+  enabled: True
+  ip: 192.168.56.2
+
+# TOR-Routing konfigurieren
+cuckoo_tor:
+  enabled: True
+
+# Interface-Konfiguration
+cuckoo_interface:
+  name: vboxnet0
+  ip: 192.168.56.1
+  netmask: 255.255.255.0
+  broadcast: 192.168.56.255
+
+# Cuckoo-Nodes (Analysemaschinen)
+# osprofile: volatility-Profile, Optionen über 'vol.py --info' einsehen
+cuckoo_nodes:
+  - label: win7x64-01
+    ip: 192.168.56.101
+    platform: windows
+    snapshot: vmcloak
+    osprofile: Win7SP1x64
+  - label: winXp-01
+    ip: 192.168.56.110
+    platform: windows
+    snapshot: vmcloak
+    osprofile: WinXPSP3x86

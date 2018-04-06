@@ -1,0 +1,5 @@
+
+- hosts: cuckoo_host
+  roles:
+    - ../roles/virtualbox
+    - ../roles/cuckoo

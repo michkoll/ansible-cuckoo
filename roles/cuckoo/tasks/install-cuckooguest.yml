@@ -18,24 +18,3 @@
   with_items: "{{ vmcloak_pip_packages }}"
   become: yes
   become_user: "{{ cuckoo_user }}"
-
-#- name: Reset vmcloak
-#  file:
-#    path: "~/.vmcloak/"
-#    state: absent
-#  become: yes
-#  become_user: "{{ cuckoo_user }}"
-#  when: vmcloak_reset == True
-#
-#- name: Check if config directory exists
-#  stat:
-#    path: "~/.vmcloak/"
-#  register: config_dir_exists
-#  become: yes
-#  become_user: "{{ cuckoo_user }}"
-#
-#- name: Create config directory if not exists
-#  command: "vmcloak"
-#  when: config_dir_exists.stat.exists == False
-#  become: yes
-#  become_user: "{{ cuckoo_user }}"

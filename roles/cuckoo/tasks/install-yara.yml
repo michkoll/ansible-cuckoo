@@ -10,7 +10,7 @@
 - name: Download yara
   become: yes
   become_method: sudo
-  get_url: url=https://github.com/plusvic/yara/archive/v{{ yara_version }}.tar.gz dest=/tmp/ mode=0440
+  get_url: url=https://github.com/VirusTotal/yara/archive/v{{ yara_version }}.tar.gz dest=/tmp/ mode=0440
 
 - name: Extract yara
   become: yes
@@ -38,16 +38,23 @@
   args:
     chdir: /tmp/yara-{{ yara_version }}
 
-- name: Build yara python module
-  become: yes
-  become_method: sudo
-  command: python setup.py build install
-  args:
-    chdir: /tmp/yara-{{ yara_version }}/yara-python
+#- name: Build yara python module
+#  become: yes
+#  become_method: sudo
+#  command: python setup.py build install
+#  args:
+#    chdir: /tmp/yara-{{ yara_version }}/yara-python
 
-- name: yara ldconfig
+- name: install yara-python
+  pip:
+    name: yara-python  
   become: yes
   become_method: sudo
-  command: ldconfig
-  args:
-    chdir: /tmp/yara-{{ yara_version }}/yara-python
+  
+
+#- name: yara ldconfig
+#  become: yes
+#  become_method: sudo
+#  command: ldconfig
+#  args:
+#    chdir: /tmp/yara-{{ yara_version }}/yara-python

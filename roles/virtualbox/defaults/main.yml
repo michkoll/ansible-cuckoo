@@ -1,7 +1,7 @@
 ---
 # Variable definition for virtualbox-role
 
-virtualbox_version: 5.1.34
+virtualbox_version: 5.1.38
 
 # Extract extpack with tar xf
 # Show licence key with openssl sha -sha256 ExtPack-license.txt

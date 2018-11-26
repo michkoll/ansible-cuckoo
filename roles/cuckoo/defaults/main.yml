@@ -87,7 +87,7 @@ cuckoo_apt_requirements:
   - zlib1g-dev
   - swig
 
-yara_version: "3.3.0"
+yara_version: "3.7.0"
 yara_apt_requirements:
   - libpcre3
   - libpcre3-dev

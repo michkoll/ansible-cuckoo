@@ -65,11 +65,11 @@ cuckoo_nodes:
     platform: windows
     snapshot: vmcloak
     osprofile: Win7SP1x64
-  - label: winXp-01
-    ip: 192.168.56.110
-    platform: windows
-    snapshot: vmcloak
-    osprofile: WinXPSP3x86
+#  - label: winXp-01
+#    ip: 192.168.56.110
+#    platform: windows
+#    snapshot: vmcloak
+#    osprofile: WinXPSP3x86
 
 
 
